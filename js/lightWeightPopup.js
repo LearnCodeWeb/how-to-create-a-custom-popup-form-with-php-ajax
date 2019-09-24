@@ -35,6 +35,8 @@
 					success	:	function(data){
 						if(data!=""){
 							setTimeout(function(){$('#lightWeightPopupBody').html(data);},1000);
+						}else{
+							alert('No data found!');
 						}
 					}
 				});
