@@ -21,8 +21,8 @@
 				href			:	u, //Ajax url
 				width			:	w, //Container width
 				height			:	h, //Container height
-				maxWidth		:	mw, //Container title
-				maxHeight		:	mh, //Container close text/icon
+				maxWidth		:	mw, //Container max width
+				maxHeight		:	mh, //Container max height
 			},options);
 			
 			console.log(settings);
