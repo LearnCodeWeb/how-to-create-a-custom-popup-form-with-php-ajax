@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"  prefix="og: http://ogp.me/ns#" class="no-js">
 <head>
@@ -8,7 +7,7 @@
 	<link rel="shortcut icon" href="https://demo.learncodeweb.com/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/lightweightpopup.css" type="text/css">
+	<link rel="stylesheet" href="css/lightweightpopup.css?<?php echo rand();?>" type="text/css">
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -74,7 +73,36 @@
 
    	<div class="container">
 		<h1><a href="https://learncodeweb.com/php/load-dynamic-data-on-page-scroll-with-php-and-ajax/">How to create a custom POPUP form with PHP & Ajax</a></h1>
-		<div class="text-center mt-5"><button type="button" name="popup" id="popup" class="btn btn-primary" data-href="contact-us.php" data-content="ajax" data-width="50%" data-height="70%"><i class="fa fa-fw fa-file-alt"></i> CLICK HERE</button></div>
+		<div class="text-center mt-5">
+			<button type="button" id="popup" class="btn btn-primary" data-href="contact-us.php" data-content="ajax"><i class="fa fa-fw fa-file-alt"></i> CLICK HERE AJAX</button>
+			<button type="button" id="inline" class="btn btn-danger" data-content="inline"><i class="fa fa-fw fa-file-alt"></i> CLICK HERE INLINE</button>
+			<a href="javascript:;" data-href="contact-us.php" class="btn btn-primary" data-content="ajax"><i class="fa fa-fw fa-file-alt"></i> CLICK HERE AJAX</a>
+		</div>
+		
+		<div class="inline" style="display:none;">
+			<form method="post">
+				<div class="form-group">
+					<label>First Name</label>
+					<input type="text" name="name" id="name" class="form-control" placeholder="Enter your first name">
+				</div>
+				<div class="form-group">
+					<label>Last Name</label>
+					<input type="text" name="name" id="name" class="form-control" placeholder="Enter your last name">
+				</div>
+				<div class="form-group">
+					<label>Email</label>
+					<input type="email" name="name" id="name" class="form-control" placeholder="Enter your email">
+				</div>
+				<div class="form-group">
+					<label>Message</label>
+					<textarea rows="5" name="message" id="message" class="form-control" placeholder="Write your message here"></textarea>
+				</div>
+				<div class="form-group">
+					<input type="button" name="button" value="Submit" class="btn btn-danger">
+				</div>
+			</form>
+		</div>
+		
 	</div>
 
 	<div class="container my-4">
@@ -94,10 +122,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-	<script src="js/lightWeightPopup.js"></script>
+	<script src="js/lightWeightPopup.js?<?php echo rand();?>"></script>
 	<script>
 		$(document).ready(function(e) {
-			$('#popup').lightWeightPopup({href:'contact-us.php',width:'320px',maxWidth:'90%'});
+			$('#popup').lightWeightPopup({href:'contact-us.php', width:'90%',maxWidth:'600px' ,title:'Ajax Model'});
+			$('#inline').lightWeightPopup({width:'95%',maxWidth:'320px' ,title:'Inline Model'});
+			$('[data-content="ajax"]').lightWeightPopup({width:'95%',maxWidth:'320px' ,title:'Ajax Model'});
 		});
 	</script>
 	
