@@ -1,4 +1,7 @@
-.lwp{
+*{
+	box-sizing:border-box;
+}
+.lwp-overlay{
 	background:rgba(0,0,0,0.9);
     padding:5px;
     margin:0px auto;
@@ -6,9 +9,18 @@
     top:0;
     width:100%;
 	height:100%;
-	z-index:1072;
+	z-index:1070;
 	overflow-x:hidden;
 	overflow-y:auto;
+}
+.lwp{
+	z-index:1072;
+	position:absolute;
+	left:0px;
+	right:0;
+	top:0;
+	bottom:0px;
+	margin:0px auto;
 }
 .lwp .loading{
 	text-align:center;
@@ -18,19 +30,18 @@
 	color:#444;
 }
 .lwp #lwp{
-	margin:15px auto;
+	margin:0px auto;
 	background:#FFF;
     border:5px solid #000;
 	overflow-x:hidden;
 	overflow-y:hidden;
 	border-radius:5px;
 	position:relative;
-	top:5%;
-	max-width:450px;
 }
 .lwp .lwpIframe{
     width: 100%;
     height: 100%;
+	min-height: 100%;
     display: block;
     border: 0;
     padding: 0;
@@ -62,8 +73,7 @@
     top: -5px;
 }
 .lwp #lwpBody{
-	padding:15px;
-	min-height:100%;
+	overflow:auto;
 }
 .lwp #lwpClose{
 	float:right;
