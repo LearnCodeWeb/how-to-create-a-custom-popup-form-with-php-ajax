@@ -1,0 +1,9 @@
+{
+  "name": "how-to-create-a-custom-popup-form-with-php-ajax",
+  "version": "0.1",
+  "description": "A simple custom popup form using PHP and AJAX",
+  "main": "how-to-create-a-custom-popup-form-with-php-ajax.js",
+  "repository": "https://github.com/LearnCodeWeb/how-to-create-a-custom-popup-form-with-php-ajax",
+  "author": "Zaid Bin Khalid",
+  "license": "MIT"
+}
