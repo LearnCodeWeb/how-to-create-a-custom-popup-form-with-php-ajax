@@ -69,7 +69,7 @@ function closeDilog(action){
 				var setMF	=	'style="height:'+wh+'px"';
 			}
 						
-			$("body").append('<div class="lwp-overlay" '+setOL+'></div><div class="lwp" tabindex="-1" role="dialog"><div id="lwp" style="'+sw+' '+sh+' '+smw+' '+smh+'"><div id="lwpHead"><div class="title">'+settings.title+'</div><div class="close" onclick="closeDilog(\''+dset.content+'\')"><span>&times;</span></div></div><div id="lwpBody" role="document" '+setMF+'><div class="loading"><img src="image/loader.gif"><p class="text">Please Wait..!</p></div></div></div></div>');
+			$("body").append('<div class="lwp-overlay" '+setOL+'></div><div class="lwp" tabindex="-1" role="dialog"><div id="lwp" style="'+sw+' '+sh+' '+smw+' '+smh+'"><div id="lwpHead"><div class="title">'+settings.title+'</div><div class="close" onclick="closeDilog(\''+dset.content+'\')"><span>&times;</span></div></div><div id="lwpBody" role="document" '+setMF+'><div class="loading"><img src="https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.1/image/loader.gif"><p class="text">Please Wait..!</p></div></div></div></div>');
 			if(settings.modelFixed){
 				$('body').addClass('lwp-hidden');
 			}
