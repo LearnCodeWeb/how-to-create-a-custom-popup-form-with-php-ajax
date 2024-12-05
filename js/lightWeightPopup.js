@@ -4,107 +4,144 @@
 ** Version: 0.1
 **/
 
-function closeDilog(action){
-	if(action=="inline"){ 
-		var inlineData	=	$('#lwpBody').html();
-		setTimeout(function(){ $('body').find('.lwp-inline').html(inlineData); $('body').removeClass('lwp-hidden');},100);
+function closeDilog(action, callback) {
+	if (action === "inline") {
+		var inlineData = $('#lwpBody').html();
+		setTimeout(function () {
+			$('body').find('.lwp-inline').html(inlineData);
+			$('body').removeClass('lwp-hidden');
+		}, 100);
 	}
 	$('.lwp').remove();
 	$('.lwp-overlay').remove();
+	if (callback && typeof callback === "function") {
+		callback();
+	}
 }
 
-(function($){
-	$.fn.lightWeightPopup = function(options) {
-		var dset	=	{};
-		
-		$(this).on("click",function(){
-			
-			$("body").find('.lwp').remove();
-			w	=	h	=	u	=	mw	=	mh	=	t	=	ol	=	mf	=	'';
-			
-			var dset	=	$(this).data();
-			
-			console.log(dset);
-			
-			if(dset.width!="" && typeof dset.width !== "undefined"){	w	=	dset.width;}
-			if(dset.height!="" && typeof dset.height !== "undefined"){	h	=	dset.height;}
-			if(dset.href!="" && typeof dset.href !== "undefined"){u	=	dset.href;}
-			if(dset.maxWidth!="" && typeof dset.maxWidth !== "undefined"){mw	=	dset.maxWidth;}
-			if(dset.maxHeight!="" && typeof dset.maxHeight !== "undefined"){mh	=	dset.maxHeight;}
-			if(dset.title!="" && typeof dset.title !== "undefined"){t	=	dset.title;}else{t	=	'Model';}
-			if(dset.overlay==true && typeof dset.overlay !== "undefined"){ol	=	true;}else{ol	=	false;}
-			if(dset.modelFixed==true && typeof dset.modelFixed!== "undefined"){mf	=	'fixed';}
-			
-			var wh	=	parseInt(window.innerHeight)-parseInt(160);
-			
-			var settings	=	$.extend({
-				href			:	u, //Ajax url
-				width			:	w, //Container width
-				height			:	h, //Container height
-				maxWidth		:	mw, //Container title
-				maxHeight		:	mh, //Container close text/icon
-				title			:	t, //Model Title
-				overlay			:	ol, //Model close when click on overlay
-				modelFixed		:	mf,
-			},options);
-			
-			var sw	=	sh	=	smw	=	smh	=	setOL	=	setMF	=	'';
-			
-			if(settings.width!=""){
-				var	sw	=	'width:'+settings.width+';';
-			}
-			if(settings.height!=""){
-				var	sh	=	'height:'+settings.height+';';
-			}
-			if(settings.maxWidth!=""){
-				var	smw	=	'max-width:'+settings.maxWidth+';';
-			}
-			if(settings.maxHeight!=""){
-				var	smh	=	'max-height:'+settings.maxHeight+';';
-			}
-			if(settings.overlay==true){
-				var setOL	=	'onclick="closeDilog(\''+dset.content+'\')"';
-			}
-			if(settings.modelFixed=='fixed'){
-				var setMF	=	'style="height:'+wh+'px"';
-			}
-						
-			$("body").append('<div class="lwp-overlay" '+setOL+'></div><div class="lwp" tabindex="-1" role="dialog"><div id="lwp" style="'+sw+' '+sh+' '+smw+' '+smh+'"><div id="lwpHead"><div class="title">'+settings.title+'</div><div class="close" onclick="closeDilog(\''+dset.content+'\')"><span>&times;</span></div></div><div id="lwpBody" role="document" '+setMF+'><div class="loading"><img src="https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.1/image/loader.gif"><p class="text">Please Wait..!</p></div></div></div></div>');
-			if(settings.modelFixed){
-				$('body').addClass('lwp-hidden');
-			}
-			if(dset.content=='ajax'){
-				$.ajax({
-					method	:	"POST",
-					url		:	settings.href,
-					success	:	function(data){
-						if(data!=""){
-							setTimeout(function(){$('#lwpBody').html(data);},1000);
-						}
-					}
-				});
-			}
-			
-			if(dset.content=='iframe'){
-				var lwpHead	=	parseInt($('#lwpHead').innerHeight());
-				var lwp		=	parseInt($('#lwp').innerHeight());
-				console.log(lwpHead, lwp);
-				var bh		=	parseInt(lwp)-parseInt(lwpHead*1);
-				console.log(bh);
-				
-				setTimeout(function(){ $('#lwpBody').html('<iframe frameborder="0" style="height:'+bh+'px; width:100%;" src="'+settings.href+'"></iframe>');},1000);
-			}
-			
-			if(dset.content=='inline'){
-				var data	=	$('body').find('.lwp-inline').html();
-				if(data!=""){
-					setTimeout(function(){$('#lwpBody').html(data);},1000);
-				}
-				$('body').find('.lwp-inline').html('');
-			}	
+(function ($) {
+	$.fn.lightWeightPopup = function (options) {
+		$(this).on("click", function () {
+			openPopup($(this), options);
 		});
-		
-		
-	
 	};
-}(jQuery));
+
+	function openPopup(trigger, options) {
+		var dset = trigger.data();
+		$("body").find('.lwp').remove();
+
+		var settings = {
+			href: dset.href || '',
+			width: dset.width || '',
+			height: dset.height || '',
+			maxWidth: dset.maxWidth || '',
+			maxHeight: dset.maxHeight || '',
+			title: dset.title || 'Model',
+			overlay: dset.overlay || false,
+			modelFixed: dset.modelFixed || false
+		};
+
+		var windowHeight = window.innerHeight - 160;
+
+		// Extend settings with options passed to the plugin
+		settings = $.extend({}, settings, options);
+
+		// Prepare styles for popup
+		var styles = generatePopupStyles(settings, windowHeight);
+
+		// Append popup and overlay
+		$("body").append(generatePopupMarkup(settings, styles));
+
+		// Handle overlay click
+		if (settings.overlay) {
+			$('.lwp-overlay').on('click', function () {
+				closeDilog(dset.content, options.closeComplete);
+			});
+			// Prevent closing when clicking inside the `.lwp` content area
+			$('.lwp').on('click', function (event) {
+				event.stopPropagation(); // Prevent the click event from reaching the overlay
+			});
+		}
+
+		// Bind close button event
+		$('.lwp .close').on('click', function () {
+			closeDilog(dset.content, options.closeComplete);
+		});
+
+		// Trigger beforeOpen callback
+		if (options.beforeOpen && typeof options.beforeOpen === 'function') {
+			options.beforeOpen();
+		}
+
+		// Trigger openComplete after the popup is appended
+		if (options.openComplete && typeof options.openComplete === 'function') {
+			setTimeout(options.openComplete, 500); // Ensuring it's called after popup opens
+		}
+
+		// Load content based on type
+		loadPopupContent(dset.content, settings);
+	}
+
+	function generatePopupStyles(settings, windowHeight) {
+		var styles = {
+			width: settings.width ? 'width:' + settings.width + ';' : '',
+			height: settings.height ? 'height:' + settings.height + ';' : '',
+			maxWidth: settings.maxWidth ? 'max-width:' + settings.maxWidth + ';' : '',
+			maxHeight: settings.maxHeight ? 'max-height:' + settings.maxHeight + ';' : '',
+			modelFixed: settings.modelFixed === 'fixed' ? 'style="height:' + windowHeight + 'px"' : ''
+		};
+		return styles;
+	}
+
+	function generatePopupMarkup(settings, styles) {
+		return '<div class="lwp-overlay">' +
+			'<div class="lwp" tabindex="-1" role="dialog" style="' + styles.width + ' ' + styles.height + ' ' + styles.maxWidth + ' ' + styles.maxHeight + '">' +
+			'<div id="lwp" style="' + styles.width + ' ' + styles.height + ' ' + styles.maxWidth + ' ' + styles.maxHeight + '">' +
+			'<div id="lwpHead">' +
+			'<div class="title">' + settings.title + '</div>' +
+			'<div class="close"><span>&times;</span></div>' +
+			'</div>' +
+			'<div id="lwpBody" role="document" ' + styles.modelFixed + '>' +
+			'<div class="loading"><img src="https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.1/image/loader.gif"><p class="text">Please Wait..!</p></div>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>';
+	}
+
+	function loadPopupContent(contentType, settings) {
+		var $popupBody = $('#lwpBody');
+
+		if (contentType === 'ajax') {
+			$.ajax({
+				method: "POST",
+				url: settings.href,
+				success: function (data) {
+					if (data) {
+						setTimeout(function () { $popupBody.html(data); }, 1000);
+					}
+				}
+			});
+		}
+
+		if (contentType === 'iframe') {
+			var lwpHead = parseInt($('#lwpHead').innerHeight());
+			var lwp = parseInt($('#lwp').innerHeight());
+			var bh = lwp - lwpHead;
+			setTimeout(function () {
+				$popupBody.html('<iframe frameborder="0" class="lwpIframe" style="height:' + bh + 'px; width:100%;" src="' + settings.href + '"></iframe>');
+			}, 1000);
+		}
+
+		if (contentType === 'inline') {
+			var data = $('body').find('.lwp-inline').html();
+			if (data) {
+				setTimeout(function () {
+					$popupBody.html(data);
+				}, 1000);
+			}
+			$('body').find('.lwp-inline').html('');
+		}
+	}
+
+})(jQuery);
