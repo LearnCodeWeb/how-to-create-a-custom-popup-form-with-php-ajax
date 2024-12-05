@@ -2,10 +2,14 @@
 Create a custom POPUP form with Jquery
 
 Can add by CDN
+
+*JS*
 ````
 https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.4/js/lightWeightPopup.min.js
+````
+*CSS*
+````
 https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.4/css/lightWeightPopup.min.css
-
 ````
 
 
