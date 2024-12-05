@@ -367,6 +367,15 @@
 				width: '500px',
 				top: '50',
 				overlay: true,
+				type: 'ajax',
+				ajaxHeaders: {
+					'X-Another-Header': 'some-value',
+					'Custom-Header': 'another-value'
+				},
+				ajaxData: {
+					'value1': 'some-value-1',
+					'value2': 'some-value-2',
+				},
 				beforeOpen: function () {
 					alert('The popup is about to open.');
 				},
@@ -378,11 +387,11 @@
 				}
 			});
 
-			$('#popup').lightWeightPopup({ href: 'contact-us.html', overlay: true, width: '90%', maxWidth: '600px', title: 'Ajax Model' });
-			$('#inline').lightWeightPopup({ title: 'Inline Model' });
-			$('#ancher').lightWeightPopup({ width: '95%', maxWidth: '320px', title: 'Ajax Model' });
-			$('#iframe').lightWeightPopup({ href: 'https://www.youtube.com/embed/foSaKHdXbss', maxWidth: '600px', height: '400px', title: 'Iframe Model' });
-			$('.iframe').lightWeightPopup({ width: '100%', height: '100%', title: 'Iframe Model' });
+			$('#popup').lightWeightPopup({ type: 'ajax', href: 'contact-us.html', method: 'POST', overlay: true, width: '90%', maxWidth: '600px', title: 'Ajax Model' });
+			$('#inline').lightWeightPopup({ type: 'inline', title: 'Inline Model' });
+			$('#ancher').lightWeightPopup({ type: 'ajax', width: '95%', maxWidth: '320px', title: 'Ajax Model' });
+			$('#iframe').lightWeightPopup({ type: 'iframe', href: 'https://www.youtube.com/embed/foSaKHdXbss', maxWidth: '600px', height: '400px', title: 'Iframe Model' });
+			$('.iframe').lightWeightPopup({ type: 'iframe', width: '100%', height: '100%', title: 'Iframe Model' });
 		});
 	</script>
 
