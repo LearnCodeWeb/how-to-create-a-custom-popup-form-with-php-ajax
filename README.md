@@ -5,11 +5,11 @@ Can add by CDN
 
 *JS*
 ````
-https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.4/js/lightWeightPopup.min.js
+https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.5/js/lightWeightPopup.min.js
 ````
 *CSS*
 ````
-https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.4/css/lightWeightPopup.min.css
+https://cdn.jsdelivr.net/gh/LearnCodeWeb/lightWeightPopup@v-0.5/css/lightWeightPopup.min.css
 ````
 
 
