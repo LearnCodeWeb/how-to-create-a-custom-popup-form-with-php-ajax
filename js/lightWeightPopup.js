@@ -142,23 +142,39 @@ function closeDilog(action, callback) {
 		}
 
 		if (settings.type === 'iframe') {
-			var lwpHead = parseInt($('#lwpHead').innerHeight());
-			var lwp = parseInt($('#lwp').innerHeight());
-			var bh = lwp - lwpHead;
-			setTimeout(function () {
-				$popupBody.html('<iframe frameborder="0" class="lwpIframe" style="height:' + bh + 'px; width:100%;" src="' + settings.href + '"></iframe>');
-			}, 1000);
+			try {
+				var lwpHead = parseInt($('#lwpHead').innerHeight());
+				var lwp = parseInt($('#lwp').innerHeight());
+				if (isNaN(lwpHead) || isNaN(lwp)) {
+					throw new Error("Height calculations failed. Please ensure elements exist and are correctly sized.");
+				}
+				var bh = lwp - lwpHead;
+				setTimeout(function () {
+					$popupBody.html('<iframe frameborder="0" class="lwpIframe" style="height:' + bh + 'px; width:100%;" src="' + settings.href + '"></iframe>');
+				}, 1000);
+			} catch (error) {
+				console.error("Error in iframe setup:", error.message);
+				$popupBody.html("<p>Error loading iframe. Please try again later.</p>");
+			}
 		}
 
 		if (settings.type === 'inline') {
-			var data = $('body').find('.lwp-inline').html();
-			if (data) {
-				setTimeout(function () {
-					$popupBody.html(data);
-				}, 1000);
+			try {
+				var data = $('body').find('.lwp-inline').html();
+				if (data) {
+					setTimeout(function () {
+						$popupBody.html(data);
+					}, 1000);
+				} else {
+					throw new Error("No inline content found.");
+				}
+				$('body').find('.lwp-inline').html('');
+			} catch (error) {
+				console.error("Error in inline content setup:", error.message);
+				$popupBody.html("<p>Error loading inline content. Please try again later.</p>");
 			}
-			$('body').find('.lwp-inline').html('');
 		}
+
 	}
 
 })(jQuery);
