@@ -26,7 +26,7 @@
 		<h1><a href="https://learncodeweb.com/web-development/how-to-create-a-custom-popup-form-with-php-and-ajax/">How
 				to create a custom POPUP form with PHP & Ajax</a></h1>
 		<div class="text-center mt-5">
-			<button type="button" class="btn btn-light mb-3 open-popup" data-href="https://learncodeweb.github.io/lightWeightPopup/contact-us.html"
+			<button type="button" class="btn btn-light mb-3 open-popup" data-href="contact-us.html"
 				data-content="ajax">Open Popup New</button>
 
 			<button type="button" id="popup" class="btn btn-primary mb-3" data-overlay="true"
@@ -368,7 +368,6 @@
 				top: '50',
 				overlay: true,
 				type: 'ajax',
-				method:'GET',
 				ajaxHeaders: {
 					'X-Another-Header': 'some-value',
 					'Custom-Header': 'another-value'
@@ -388,7 +387,7 @@
 				}
 			});
 
-			$('#popup').lightWeightPopup({ type: 'ajax', href: 'contact-us.html', method: 'POST', overlay: true, width: '90%', maxWidth: '600px', title: 'Ajax Model' });
+			$('#popup').lightWeightPopup({ type: 'ajax', href: 'contact-us.html', overlay: true, width: '90%', maxWidth: '600px', title: 'Ajax Model' });
 			$('#inline').lightWeightPopup({ type: 'inline', title: 'Inline Model' });
 			$('#ancher').lightWeightPopup({ type: 'ajax', width: '95%', maxWidth: '320px', title: 'Ajax Model' });
 			$('#iframe').lightWeightPopup({ type: 'iframe', href: 'https://www.youtube.com/embed/foSaKHdXbss', maxWidth: '600px', height: '400px', title: 'Iframe Model' });
