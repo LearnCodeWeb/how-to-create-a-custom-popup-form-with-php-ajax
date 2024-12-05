@@ -1,7 +1,7 @@
 /**
 ** Author: ZAID BIN KHALID
 ** Website: https://learncodeweb.com
-** Version: 0.1
+** Version: 0.5
 **/
 
 function closeDilog(action, callback) {
@@ -31,6 +31,7 @@ function closeDilog(action, callback) {
 		$("body").find('.lwp').remove();
 
 		var settings = {
+			method: dset.method || 'GET',
 			href: dset.href || '',
 			width: dset.width || '',
 			height: dset.height || '',
@@ -38,7 +39,10 @@ function closeDilog(action, callback) {
 			maxHeight: dset.maxHeight || '',
 			title: dset.title || 'Model',
 			overlay: dset.overlay || false,
-			modelFixed: dset.modelFixed || false
+			modelFixed: dset.modelFixed || false,
+			ajaxHeaders: dset.headers || {},
+			ajaxData: dset.data || {},
+			type: dset.type || '',
 		};
 
 		var windowHeight = window.innerHeight - 160;
@@ -55,7 +59,7 @@ function closeDilog(action, callback) {
 		// Handle overlay click
 		if (settings.overlay) {
 			$('.lwp-overlay').on('click', function () {
-				closeDilog(dset.content, options.closeComplete);
+				closeDilog(settings.type, options.closeComplete);
 			});
 			// Prevent closing when clicking inside the `.lwp` content area
 			$('.lwp').on('click', function (event) {
@@ -65,7 +69,7 @@ function closeDilog(action, callback) {
 
 		// Bind close button event
 		$('.lwp .close').on('click', function () {
-			closeDilog(dset.content, options.closeComplete);
+			closeDilog(settings.type, options.closeComplete);
 		});
 
 		// Trigger beforeOpen callback
@@ -79,7 +83,7 @@ function closeDilog(action, callback) {
 		}
 
 		// Load content based on type
-		loadPopupContent(dset.content, settings);
+		loadPopupContent(settings);
 	}
 
 	function generatePopupStyles(settings, windowHeight) {
@@ -109,22 +113,35 @@ function closeDilog(action, callback) {
 			'</div>';
 	}
 
-	function loadPopupContent(contentType, settings) {
+	function loadPopupContent(settings) {
 		var $popupBody = $('#lwpBody');
 
-		if (contentType === 'ajax') {
+		// Validate the 'type' property
+		if (!['ajax', 'iframe', 'inline'].includes(settings.type)) {
+			$popupBody.html("Error: Please define the type parameter. Valid types are 'ajax', 'iframe', or 'inline'.");
+			settings.type = ''; // Set to empty to avoid further issues
+		}
+
+
+		if (settings.type === 'ajax') {
 			$.ajax({
-				method: "POST",
+				method: settings.method,
 				url: settings.href,
+				headers: settings.ajaxHeaders, // Custom headers
+				data: settings.ajaxData, // Custom headers
 				success: function (data) {
 					if (data) {
 						setTimeout(function () { $popupBody.html(data); }, 1000);
 					}
+				},
+				error: function (xhr, status, error) {
+					console.error("Error occurred:", status, error);
+					$popupBody.html("<p>There was an error loading the content. Please try again later.</p>");
 				}
 			});
 		}
 
-		if (contentType === 'iframe') {
+		if (settings.type === 'iframe') {
 			var lwpHead = parseInt($('#lwpHead').innerHeight());
 			var lwp = parseInt($('#lwp').innerHeight());
 			var bh = lwp - lwpHead;
@@ -133,7 +150,7 @@ function closeDilog(action, callback) {
 			}, 1000);
 		}
 
-		if (contentType === 'inline') {
+		if (settings.type === 'inline') {
 			var data = $('body').find('.lwp-inline').html();
 			if (data) {
 				setTimeout(function () {
